@@ -21,8 +21,13 @@ app.get('/api/notes', (req, res) => {
     res.json(notes);
 });
 
-app.get('/notes', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'notes.html'));
+app.post('/api/notes', (req, res) => {
+    const newNote = req.body;
+    const notes = readNotesFromFile();
+    newNote.id = uuidv4();
+    notes.push(newNote);
+    writeNotesToFile(notes);
+    res.json(newNote);
 });
 
 app.listen(PORT, () => {
